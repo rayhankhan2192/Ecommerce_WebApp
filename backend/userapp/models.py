@@ -28,6 +28,14 @@ class User(AbstractBaseUser):
     def get_short_name(self):
         return self.first_name or self.email.split('@')[0]
     
+    def has_perm(self, perm, obj=None):
+        """Check if the user has a specific permission."""
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        """Check if the user has permissions for a specific app."""
+        return self.is_superuser
+    
 class UserAddress(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='address')
     home = models.TextField(max_length=100, blank=True, null=True)
